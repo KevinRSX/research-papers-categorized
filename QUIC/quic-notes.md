@@ -53,3 +53,34 @@ Relaxed version of eBPF with additional verification:
 
 ### Protocol Operations
 
+Break down the protocol execution flow into **generic** subroutines. These specified procedures are called protocol operations.
+
+Parameters are separated out.
+
+Protocol operations are split into three anchors, each of which is a insertion point for a pluglet:
+
+- replace: points to the actual implementation, enables a pluglet to override default behavior
+- pre: attaches the plugin just before the protocol operation invocation
+- post: just after
+
+
+
+### Attaching Protocol Plugins
+
+- A plugin consists of a combination of several pluglets
+- Plugins require an interface with which they can operate on their connection
+
+Pluglets are attahced to PREs. PREs' heap points to an area common to all pluglets of a plugin.
+
+- PQUIC exposes some functions to PRE
+
+
+
+## Exchanging Plugins
+
+TLS 1.3 prevents middleboxes from modifying data exchanged over QUIC connections. Protocol plugins could therefore be exchanged over an existing QUIC connection.
+
+The design enables independent developers to publish their own plugins for which the PQUIC peers' trust in their validity is established by independent plugin validators (PV).
+
+- Directly offer to plugin developers an efficient mean that is logarithmic in the number of plugins published
+- Make PQUIC peers able to formulate their safety requirements by combining the PVs they trust
