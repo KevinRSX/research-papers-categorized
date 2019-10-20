@@ -23,3 +23,33 @@
     - Safe and scalable technique that enables the on-demand exchange of protocol plugins over QUIC connections
     - Prototype pquic which add to picoquic a virtual machine that allows executing the bytecode of protocol plugins in a platform independent manner while monitoring their behaviour
     - Several example plugins to demonstrate the benefits of PQUIC
+
+
+
+## Local Plugin Insertion
+
+A PQUIC implementation can be extended by dynamically loading one or more protocol plugins.
+
+- A PQUIC implementation provides an API to protocol plugins. These functions are called *protocol operations*
+- On-the-fly protocol plugin insertion
+  - plugin = pluglet + manifest
+- Isolation between connections and between plugins
+
+
+
+### Pluglet Runtime Environment (PRE)
+
+Requirements:
+
+- Plugins should run regardless of the underlying hardware and OS
+- Environment should keep each pluglet under control
+
+Relaxed version of eBPF with additional verification:
+
+- Check simple properties of bytecode
+- Monitor the correct operation of pluglets by injecting specific instructions when their bytecode is JITed (use a register to check if memory is within the allowed bounds)
+
+
+
+### Protocol Operations
+
