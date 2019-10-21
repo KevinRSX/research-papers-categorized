@@ -84,3 +84,17 @@ The design enables independent developers to publish their own plugins for which
 
 - Directly offer to plugin developers an efficient mean that is logarithmic in the number of plugins published
 - Make PQUIC peers able to formulate their safety requirements by combining the PVs they trust
+
+
+
+### Distributing Trust
+
+- Plugin developers: write plugins and publish them on the PR
+- PR: holds all control plugins from all developers and centralizes the secure communication between all participants
+- PV: validates the correct functioning of a plugin
+- Each PV builds a Merkle Prefix Tree containing the plugins it successfully validated and digitially signs its roots, forming a Signed Tree Root (STR)
+
+<img src="../assets/images/pquic-distributed-security.png" alt="pquic-distributed-security" style="zoom:50%;" />
+
+<img src="../assets/images/pquic-plugin-exchange.png" alt="pquic-plugin-exchange" style="zoom:50%;" />
+
