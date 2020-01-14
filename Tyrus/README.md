@@ -47,3 +47,39 @@ Each GOP contains an I-frame, followed by a series of PBb sequences, where the n
 - GOP structure is fixed
 
 <img src="../assets/images/beta-gop-structure.png" alt="beta-gop-structure" style="zoom:50%;" />
+
+
+
+### BETA Design Overview
+
+Motivating questions:
+
+- How can we help the client decode and play a partial segment, and discard some part of it when needed, to avoid a stall in the case of a sudden bandwidth reduction?
+- Can we dynamically adjust the quality of the segment being downloaded by manipulating the temporal property?
+
+Problems:
+
+- A segment (containing one or a few GOPs) must be completely downloaded to be decoded
+- Using QUIC cannot eliminate Head-of-Line Blocking (HoLB). It will exist at the segment level at the application layer, as next chunk cannot be played, even if delivered, until previous one has played fully.
+
+
+
+#### Sub-segment Level Quality Adjustment
+
+Frames in each segment are ordered according to their importance in the decoding process and are transmitted in this particular order to the client over HTTP
+
+
+
+#### VQ Threshold
+
+- A VQ threshold that defines the number of frames in each segment (in BETA-order) that must be received, so that the impact on VQ is minimized
+- VQ threshold is determined on the server side while encoding the video, and is used by the BETA client-side algorithm to terminate the segment download
+
+
+
+### BETA Server
+
+#### Redefining Transmission Order
+
+- Arrange I-frames first, then P-frames and B-frames, b-frames last
+- Experiment shows that the percentage of b-frames that can be dropped without affecting VQ should be computed per segment
