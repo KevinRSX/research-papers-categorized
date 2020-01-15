@@ -2,9 +2,10 @@
 
 This folder introduces a few papers related to Project Tyrus.
 
+- [BETA, MMSys'19](#beta)
 
-
-## Beta
+<div id='beta'/>
+## BETA
 
 ### Motivation
 
@@ -81,5 +82,46 @@ Frames in each segment are ordered according to their importance in the decoding
 
 #### Redefining Transmission Order
 
-- Arrange I-frames first, then P-frames and B-frames, b-frames last
+- Arrange I-frames first, then P-frames and B-frames, b-frames at last
 - Experiment shows that the percentage of b-frames that can be dropped without affecting VQ should be computed per segment
+
+
+
+#### Opportunity: Reducing the Bitrate Set
+
+Intermediate chunks can be dropped since their bitrates are covered by their respective next higher quality levels. The selection should be done by video content providers
+
+
+
+#### VQ Threshold
+
+- Since scarification in visual quality can vary significantly among segments, we need to determine the acceptable VQ loss to balance visual quality (higher PSNR and SSIM) and stability
+- Define VQ threshold, $f_i^{VQ}$ as the percentage of b-frames that must be received to ensure equal or better visual quality than the next lower quality level
+- Per-segment $f_i^{VQ}$ values are included in the modified MPD file
+
+
+
+### BETA Client
+
+Client side should:
+
+- know the VQ threshold for each segment
+- have the BETA quality management algorithm that controls the appropriate actions at sub-segment granularity
+- monitor the progress of the downloads, so it can drop and replace the current segment as a last resort
+- be able to play the partial segment
+
+
+
+#### Per-segment Timeout
+
+Due to VBR, for a fixed average available bandwidth, chunk (segment) size could be different.
+
+Timeout $t_i=\frac{s_i}{b_i}$, where $s_i$ is segment size and $b_i$ is average available bandwidth.
+
+
+
+#### BETA Quality Management Algorithm
+
+Purpose of BETA algorithm: decide if there is a need to drop the tail of the segment and whether it is possible to do so. Achieved by comparing the download progress with the timeout parameters and VQ threshold for possible quality tuning.
+
+<img src="../assets/images/beta-quality-management-algo.png" alt="beta-gop-structure" style="zoom:75%;" />
