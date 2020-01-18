@@ -23,7 +23,7 @@ Solve the min-max problem
 $$
 (G^*,D^*)=\text{arg}\min_G\max_D\mathcal{L}(G,D)
 $$
-[An intuitive introduction to GAN (Chinese)](https://zhuanlan.zhihu.com/p/33752313)
+[Recommended: An intuitive introduction to GAN (Chinese)](https://zhuanlan.zhihu.com/p/33752313)
 
 Mapping function which maps the photo manifold $\mathcal{P}$ to the cartoon manifold $\mathcal{C}$
 
@@ -31,3 +31,22 @@ Training data:
 
 - $S_{data}(p)=\{p_i|i=1...N\}\subset \mathcal{P}$
 - $S_{data}(c)=\{c_i|i=1...N\}\subset \mathcal{C}$
+
+Loss function:
+
+$\mathcal{L}(G,D)=\mathcal{L}_{adv}(G,D)+\omega\mathcal{L}_{con}(G,D)$
+
+
+
+To comply with the fact that cartoon images have clear images, the discriminator uses binary classification that tries to assign the correct label to the following:
+
+1. The cartoon images output by generator $G(p_k)$ and cartoon images without clear edges $e_j$
+2. Real cartoon images $c_i$
+
+
+
+#### Initialization
+
+Since the GAN model is highly nonlinear, random initialization may cause the optimization to be trapped at local minimum.
+
+Solution: add an initialization phase (instead of initializing randomly) by pre-training the generator network $G$ with only the semantic content loss
