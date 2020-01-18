@@ -1,4 +1,4 @@
-# Category QUIC
+# Category Transport
 
 ## PQUIC
 
