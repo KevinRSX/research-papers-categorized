@@ -22,3 +22,25 @@ AAMS:
 - Multi-style style swap: break the limitation of fixed receptive field in high-level feature space and produce multiple feature maps reflecting different stroke patterns
 - Fusion: integrate multiple stroke patterns into different spatial regions of the input image harmoniously
 
+
+
+## Implementation
+
+### Model
+
+In `net/aams.py`
+
+- [x] `transfer(self, contents, styles, inter_weight=1.0)`
+- [x] `decode(x, encode_features, reuse=False)`
+- [ ] `self_attention_autoencoder(x)`
+- [x] `self_attention(x, size, scope='self_attention', reuse=False)`
+- [ ] `multi_scale_style_swap(content_features, style_features, patch_size=5)`
+- [ ] `multi_stroke_fusion(stylized_maps, attention_map, theta=50.0, mode='softmax')`
+- [ ] `build_graph(self, x)`
+
+
+
+In `net/util.py` (utility functions)
+
+- [ ] `adain_colarization()`
+- [ ] 
